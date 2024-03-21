@@ -99,7 +99,6 @@ namespace Frontend
             this.RoleInitialize();
         }
 
-
         public void AddEmployee()
         {
             if (RoleService.GetCount() != 0)
@@ -387,6 +386,5 @@ namespace Frontend
                 PrintData.PrintRoleRow(role);
             }
         }
-
     }
 }
