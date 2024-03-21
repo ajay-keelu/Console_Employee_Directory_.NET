@@ -1,0 +1,14 @@
+C:\Users\ajay.keelu\OneDrive - Technovert\Desktop\Tasks\Task-5\bin\Debug\net7.0\Task-5.exe
+C:\Users\ajay.keelu\OneDrive - Technovert\Desktop\Tasks\Task-5\bin\Debug\net7.0\Task-5.deps.json
+C:\Users\ajay.keelu\OneDrive - Technovert\Desktop\Tasks\Task-5\bin\Debug\net7.0\Task-5.runtimeconfig.json
+C:\Users\ajay.keelu\OneDrive - Technovert\Desktop\Tasks\Task-5\bin\Debug\net7.0\Task-5.dll
+C:\Users\ajay.keelu\OneDrive - Technovert\Desktop\Tasks\Task-5\bin\Debug\net7.0\Task-5.pdb
+C:\Users\ajay.keelu\OneDrive - Technovert\Desktop\Tasks\Task-5\obj\Debug\net7.0\Task-5.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ajay.keelu\OneDrive - Technovert\Desktop\Tasks\Task-5\obj\Debug\net7.0\Task-5.AssemblyInfoInputs.cache
+C:\Users\ajay.keelu\OneDrive - Technovert\Desktop\Tasks\Task-5\obj\Debug\net7.0\Task-5.AssemblyInfo.cs
+C:\Users\ajay.keelu\OneDrive - Technovert\Desktop\Tasks\Task-5\obj\Debug\net7.0\Task-5.csproj.CoreCompileInputs.cache
+C:\Users\ajay.keelu\OneDrive - Technovert\Desktop\Tasks\Task-5\obj\Debug\net7.0\Task-5.dll
+C:\Users\ajay.keelu\OneDrive - Technovert\Desktop\Tasks\Task-5\obj\Debug\net7.0\refint\Task-5.dll
+C:\Users\ajay.keelu\OneDrive - Technovert\Desktop\Tasks\Task-5\obj\Debug\net7.0\Task-5.pdb
+C:\Users\ajay.keelu\OneDrive - Technovert\Desktop\Tasks\Task-5\obj\Debug\net7.0\Task-5.genruntimeconfig.cache
+C:\Users\ajay.keelu\OneDrive - Technovert\Desktop\Tasks\Task-5\obj\Debug\net7.0\ref\Task-5.dll
