@@ -171,9 +171,7 @@ namespace Frontend
                     employee.JoiningDate = Utility.GetInputDate("Joining date", true);
                     break;
                 case 5:
-                    RoleService.RemoveEmployeeFromRole(employee);
-                    employee.JobTitle = this.AssignRoleToEmployee();
-                    RoleService.AssignEmployeeToRole(employee);
+                    UpdateJobTitle(employee);
                     break;
                 case 6:
                     employee.DateOfBirth = Utility.GetInputDate("Date of birth", false);
@@ -221,6 +219,13 @@ namespace Frontend
             {
                 Console.WriteLine("Employee not found with given Id");
             }
+        }
+
+        public void UpdateJobTitle(Employee employee)
+        {
+            RoleService.RemoveEmployeeFromRole(employee);
+            employee.JobTitle = this.AssignRoleToEmployee();
+            RoleService.AssignEmployeeToRole(employee);
         }
 
         public void DeleteEmployee()
