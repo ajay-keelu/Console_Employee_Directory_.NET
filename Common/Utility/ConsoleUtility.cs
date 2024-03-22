@@ -2,13 +2,11 @@ using Services;
 
 namespace Frontend
 {
-    public class PrintData
+    public class ConsoleUtility
     {
-        static EmployeeDirectory EmployeeDirectory = new EmployeeDirectory();
-        static RoleService RoleService = new RoleService();
         public void PrintLine()
         {
-            Console.WriteLine("+---------------+------------------+------------------+------------------+------------------+--------------------+--------------------+-------------+------------------+");
+            Console.WriteLine("+------------------+------------------+------------------+------------------+------------------+--------------------+--------------------+-------------+------------------+");
         }
 
         public void PrintNoData()
@@ -27,22 +25,22 @@ namespace Frontend
 
         public void PrintTableHead()
         {
-            Console.WriteLine("+---------------+------------------+------------------+------------------+------------------+--------------------+--------------------+-------------+------------------+");
-            Console.WriteLine("|Employee ID    |Full Name         |Location          |Department        |Job Title / Role  |Manager             |Project             |Status       |Joining Date      |");
-            Console.WriteLine("+---------------+------------------+------------------+------------------+------------------+--------------------+--------------------+-------------+------------------+");
+            Console.WriteLine("+------------------+------------------+------------------+------------------+------------------+--------------------+--------------------+-------------+------------------+");
+            Console.WriteLine("|Employee ID       |Full Name         |Location          |Department        |Job Title / Role  |Manager             |Project             |Status       |Joining Date      |");
+            Console.WriteLine("+------------------+------------------+------------------+------------------+------------------+--------------------+--------------------+-------------+------------------+");
         }
 
-        public void PrintEmployeeRow(Employee employee)
+        public void PrintEmployeeRow(Employee employee, string roleName)
         {
             string fullname = this.GetPropertyWithWidth(employee.Name is null or "" ? "No data" : employee.Name, 20);
             string department = this.GetPropertyWithWidth(employee.Department is null or "" ? "No data" : employee.Department, 20);
             string location = GetPropertyWithWidth(employee.Location is null or "" ? "No data" : employee.Location, 20);
-            string role = GetPropertyWithWidth(employee.JobTitle is null or "" ? "No data" : RoleService.GetById(employee.JobTitle).Name, 20);
-            string status = GetPropertyWithWidth(employee.Status is null or "" ? "No data" : employee.Status, 15);
+            string role = GetPropertyWithWidth(roleName, 20);
+            string status = GetPropertyWithWidth(employee.Status.ToString(), 15);
             string manager = GetPropertyWithWidth(employee.Manager is null or "" ? "No data" : employee.Manager, 22);
             string project = GetPropertyWithWidth(employee.Project is null or "" ? "No data" : employee.Project, 22);
-            string joiningDate = GetPropertyWithWidth(employee.JoiningDate is null or "" ? "No data" : employee.JoiningDate, 20);
-            string empId = GetPropertyWithWidth(employee.Id, 17);
+            string joiningDate = GetPropertyWithWidth(employee.JoiningDate.ToString("dd/MM/yyyy"), 20);
+            string empId = GetPropertyWithWidth(employee.Id, 20);
             string row = $"""|{empId}|{fullname}|{location}|{department}|{role}|{manager}|{project}|{status}|{joiningDate}|""";
             Console.WriteLine(row);
         }
@@ -64,8 +62,6 @@ namespace Frontend
             Console.WriteLine("|Description : {0}|", GetPropertyWithWidth(role.Description, 99));
             Console.WriteLine("+---------------------------------------------------------------------------------------------------------------+");
             Console.WriteLine("Assigned Employees\n");
-            EmployeeDirectory.DisplayEmployees(RoleService.GetAssignedEmployees(role.AssignedEmployeesId));
-            Console.WriteLine("==============================================================================================================================================================");
         }
 
     }

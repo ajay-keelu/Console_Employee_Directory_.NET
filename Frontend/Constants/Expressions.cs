@@ -1,6 +1,6 @@
 namespace Frontend
 {
-    public class Expression
+    public class RegularExpression
     {
         public static readonly string EmailPattern = @"[a-zA-Z0-9.-_]+@[a-zA-Z.-]+\.[a-zA-z]{2,4}$";
 

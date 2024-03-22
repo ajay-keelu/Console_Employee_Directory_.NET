@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Text.RegularExpressions;
 
 namespace Frontend
@@ -6,7 +7,6 @@ namespace Frontend
     {
         public void GetOption(out int option, int options)
         {
-
             try
             {
                 option = int.Parse(Console.ReadLine().Trim());
@@ -24,17 +24,17 @@ namespace Frontend
             return Regex.IsMatch(s, pattern);
         }
 
-        public string GetInputString(string propertyName, bool? isRequired, string? pattern)
+        public string GetInputString(string propertyName, bool isRequired, string? pattern)
         {
             string? s;
             try
             {
-                Console.WriteLine("Enter {0}{1}", propertyName, isRequired != null && isRequired == true ? "*" : ' ');
+                Console.WriteLine("Enter {0}{1}", propertyName, isRequired ? "*" : "");
                 s = Console.ReadLine()?.Trim();
-                if (isRequired != null && isRequired == true && string.IsNullOrEmpty(s)) throw new Exception();
+                if (isRequired && string.IsNullOrEmpty(s)) throw new Exception();
                 if (pattern != null && !IsValidProperty(s ??= "", pattern)) throw new Exception();
 
-                return s ??= "";
+                return s;
             }
             catch (System.Exception)
             {
@@ -43,18 +43,17 @@ namespace Frontend
             }
         }
 
-        public string GetInputDate(string propertyName, bool? isRequired)
+        public DateTime GetInputDate(string propertyName, bool isRequired)
         {
-            string? s;
+            string? date;
             try
             {
-                Console.WriteLine("Enter {0}{1}", propertyName, isRequired != null && isRequired == true ? "*" : " ");
-                s = Console.ReadLine()?.Trim();
-                if (!string.IsNullOrEmpty(s) && !this.IsValidProperty(s, Expression.DatePattern)) throw new Exception();
+                Console.WriteLine("Enter {0}{1}", propertyName, isRequired ? "*" : "");
+                date = Console.ReadLine()?.Trim();
+                if (!string.IsNullOrEmpty(date) && !this.IsValidProperty(date, RegularExpression.DatePattern)) throw new Exception();
 
-                if (isRequired != null && isRequired == true && !this.IsValidProperty(s ??= "", Expression.DatePattern)) throw new Exception();
-
-                return s ??= "";
+                if (isRequired && !this.IsValidProperty(date ??= "", RegularExpression.DatePattern)) throw new Exception();
+                return DateTime.Parse(date is null or "" ? DateTime.MinValue.ToString("dd/MM/yyyy") : date);
             }
             catch (System.Exception)
             {
@@ -68,15 +67,14 @@ namespace Frontend
             string? email;
             try
             {
-                Console.WriteLine("Enter Email*");
+                Console.WriteLine("Enter email*");
                 email = Console.ReadLine()?.Trim();
-                if (!this.IsValidProperty(email ??= "", Expression.EmailPattern)) throw new Exception();
-
+                if (!this.IsValidProperty(email ??= "", RegularExpression.EmailPattern)) throw new Exception();
                 return email;
             }
             catch (System.Exception)
             {
-                Console.WriteLine("Please enter Email correctly ... ");
+                Console.WriteLine("Please enter email correctly ... ");
                 return this.GetInputEmail();
             }
         }
@@ -87,8 +85,8 @@ namespace Frontend
             {
                 Console.WriteLine("Enter mobile number ");
                 string? mobile = Console.ReadLine()?.Trim();
-                if (!string.IsNullOrEmpty(mobile) && !this.IsValidProperty(mobile, Expression.MobilePattern)) throw new Exception();
-                return mobile ??= "";
+                if (!string.IsNullOrEmpty(mobile ??= "") && !this.IsValidProperty(mobile, RegularExpression.MobilePattern)) throw new Exception();
+                return mobile;
             }
             catch (System.Exception)
             {
