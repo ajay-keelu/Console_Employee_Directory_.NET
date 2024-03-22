@@ -9,7 +9,7 @@ namespace Services
         {
             try
             {
-                IEnumerable<Employee> employees = from emp in DataBase.GlobalDB.Employees where emp.Id == id select emp;
+                IEnumerable<Employee> employees = from emp in GlobalDB.Employees where emp.Id == id select emp;
                 return employees.Single();
             }
             catch (System.Exception)
