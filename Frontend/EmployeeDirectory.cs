@@ -196,9 +196,10 @@ namespace Frontend
 
         public string AssignRoleToEmployee()
         {
+            Console.WriteLine("Select Jobtitle / Role ");
             List<string> list = RoleService.ShowRoles();
             for (int i = 0; i < list.Count; i++)
-                Console.WriteLine("{0}.{1}", i + 1, list.ElementAt(i).Split(" ")[1]);
+                Console.WriteLine("{0}.{1}", i + 1, list.ElementAt(i).Replace(list.ElementAt(i).Split(" ")[0], ""));
             Console.WriteLine("Enter options from above");
             int option;
             Utility.GetOption(out option, list.Count);
