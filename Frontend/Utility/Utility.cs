@@ -50,9 +50,9 @@ namespace Frontend
             {
                 Console.WriteLine("Enter {0}{1}", propertyName, isRequired != null && isRequired == true ? "*" : " ");
                 s = Console.ReadLine()?.Trim();
-                if (!string.IsNullOrEmpty(s) && !this.IsValidProperty(s, Expression.datePattern)) throw new Exception();
+                if (!string.IsNullOrEmpty(s) && !this.IsValidProperty(s, Expression.DatePattern)) throw new Exception();
 
-                if (isRequired != null && isRequired == true && !this.IsValidProperty(s ??= "", Expression.datePattern)) throw new Exception();
+                if (isRequired != null && isRequired == true && !this.IsValidProperty(s ??= "", Expression.DatePattern)) throw new Exception();
 
                 return s ??= "";
             }
@@ -87,7 +87,7 @@ namespace Frontend
             {
                 Console.WriteLine("Enter mobile number ");
                 string? mobile = Console.ReadLine()?.Trim();
-                if (!string.IsNullOrEmpty(mobile) && !this.IsValidProperty(mobile, Expression.mobilePattern)) throw new Exception();
+                if (!string.IsNullOrEmpty(mobile) && !this.IsValidProperty(mobile, Expression.MobilePattern)) throw new Exception();
                 return mobile ??= "";
             }
             catch (System.Exception)

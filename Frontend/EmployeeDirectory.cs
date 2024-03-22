@@ -1,5 +1,5 @@
-using DataBase;
 using Services;
+
 namespace Frontend
 {
     public class EmployeeDirectory
@@ -107,7 +107,7 @@ namespace Frontend
                 Employee employee = new Employee()
                 {
                     Id = EmployeeService.GenerateId(),
-                    Name = Utility.GetInputString("Fullname", true, @"^[a-zA-Z]+\ [a-zA-Z]+$"),
+                    Name = Utility.GetInputString("Fullname", true, Expression.NamePattern),
                     DateOfBirth = Utility.GetInputDate("Date of birth", false),
                     Email = Utility.GetInputEmail(),
                     MobileNumber = Utility.GetMobileNumber(),
@@ -159,7 +159,7 @@ namespace Frontend
             {
                 case 1:
 
-                    employee.Name = Utility.GetInputString("Fullname", true, @"^[a-zA-Z]+\ [a-zA-Z]+$");
+                    employee.Name = Utility.GetInputString("Fullname", true, Expression.NamePattern);
                     break;
                 case 2:
                     employee.Location = Utility.GetInputString("Location", true, null);
@@ -225,10 +225,10 @@ namespace Frontend
 
         public void DeleteEmployee()
         {
-            if (GlobalDB.Employees.Count == 0)
-                DisplayEmployees();
-            else
+            DisplayEmployees();
+            if (EmployeeService.GetCount() != 0)
             {
+                Console.WriteLine("Enter id from above");
                 string? id = Console.ReadLine()?.Trim();
                 Employee? employee = EmployeeService.GetById(id ??= "");
                 if (employee != null)
@@ -249,7 +249,7 @@ namespace Frontend
                 PrintData.PrintNoData();
             else
                 PrintData.PrintTableHead();
-            foreach (Employee employee in GlobalDB.Employees)
+            foreach (Employee employee in EmployeeService.GetAll())
             {
                 PrintData.PrintEmployeeRow(employee);
                 PrintData.PrintLine();
@@ -380,7 +380,7 @@ namespace Frontend
                 Console.WriteLine("|       Roles          |");
                 Console.WriteLine("+----------------------+");
             }
-            foreach (Role role in GlobalDB.Roles)
+            foreach (Role role in RoleService.GetRoles())
             {
                 PrintData.PrintRoleHeader();
                 PrintData.PrintRoleRow(role);

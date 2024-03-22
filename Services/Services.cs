@@ -1,4 +1,5 @@
 using DataBase;
+
 namespace Services
 {
 
@@ -15,6 +16,11 @@ namespace Services
             {
                 return null;
             }
+        }
+
+        public List<Employee> GetAll()
+        {
+            return GlobalDB.Employees;
         }
 
         public int GetCount()
@@ -75,6 +81,11 @@ namespace Services
             {
                 return null;
             }
+        }
+
+        public List<Role> GetRoles()
+        {
+            return GlobalDB.Roles;
         }
         public void DeleteById(string Id)
         {
