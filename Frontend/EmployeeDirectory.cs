@@ -300,10 +300,10 @@ namespace Frontend
                 if (role != null)
                 {
                     Console.WriteLine(Menus.EditRoleMenu);
-                    Console.WriteLine("Enter options from above");
                     int option;
                     Utility.GetOption(out option, 5);
                     this.UpdateRole(option, role);
+                    Console.WriteLine("Updated Successfully");
                 }
                 else
                 {
