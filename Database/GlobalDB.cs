@@ -1,9 +1,11 @@
-namespace DataBase
-{
-    class GlobalDB
-    {
-        public static List<Employee> Employees = new List<Employee>();
+// using Models;
 
-        public static List<Role> Roles = new List<Role>();
-    }
-}
+// namespace DataBase
+// {
+//     class GlobalDB
+//     {
+//         public static List<Employee> Employees = new List<Employee>();
+
+//         public static List<Role> Roles = new List<Role>();
+//     }
+// }

@@ -1,16 +1,17 @@
-using DataBase;
+using Models;
 
 namespace Services
 {
     public class EmployeeService
     {
-        public Employee? GetById(string id)
+        public JsonService JsonService = new JsonService();
+        public Employee GetById(string id)
         {
             try
             {
-                return (from emp in GlobalDB.Employees where emp.Id == id select emp).Single();
+                return (from emp in JsonService.ReadEmployees() where emp.Id == id select emp).Single();
             }
-            catch (System.Exception)
+            catch (Exception)
             {
                 return null;
             }
@@ -18,7 +19,7 @@ namespace Services
 
         public List<Employee> GetAll()
         {
-            return GlobalDB.Employees;
+            return JsonService.ReadEmployees();
         }
 
         public bool Create(Employee employee)
@@ -26,7 +27,10 @@ namespace Services
             try
             {
                 employee.Id = this.GenerateId();
-                GlobalDB.Employees.Add(employee);
+                var Employees = JsonService.ReadEmployees();
+                Employees.Add(employee);
+                if (!JsonService.UpdateEmployeeJson(Employees)) throw new Exception();
+
                 return true;
             }
             catch (Exception)
@@ -39,8 +43,11 @@ namespace Services
         {
             try
             {
-                int index = GlobalDB.Employees.FindIndex(emp => emp.Id == employee.Id);
-                GlobalDB.Employees[index] = employee;
+                var Employees = JsonService.ReadEmployees();
+                int index = Employees.FindIndex(emp => emp.Id == employee.Id);
+                Employees[index] = employee;
+                if (!JsonService.UpdateEmployeeJson(Employees)) throw new Exception();
+
                 return true;
             }
             catch (System.Exception)
@@ -53,8 +60,10 @@ namespace Services
         {
             try
             {
-                Employee? employee = this.GetById(Id);
-                GlobalDB.Employees.Remove(employee);
+                Employee employee = this.GetById(Id);
+                var Employees = JsonService.ReadEmployees();
+                Employees = (from emp in JsonService.ReadEmployees() where emp.Id != Id select emp).ToList();
+                if (!JsonService.UpdateEmployeeJson(Employees)) throw new Exception();
                 return true;
             }
             catch (Exception)
@@ -77,9 +86,5 @@ namespace Services
             return "TZ" + CurrentDate.Year + CurrentDate.Month + CurrentDate.Day + CurrentDate.Hour + CurrentDate.Minute + CurrentDate.Second;
         }
 
-        public List<Employee> GetAssignedEmployees(List<string> roleIds)
-        {
-            return GlobalDB.Employees.FindAll(employee => roleIds.Contains(employee.Id));
-        }
     }
 }

@@ -1,16 +1,18 @@
-using DataBase;
+using Models;
 
 namespace Services
 {
     public class RoleService
     {
+        public JsonService JsonService = new JsonService();
+
         public Role? GetById(string id)
         {
             try
             {
-                return (from role in GlobalDB.Roles where role.Id == id select role).FirstOrDefault();
+                return (from role in JsonService.ReadRoles() where role.Id == id select role).Single();
             }
-            catch (System.Exception)
+            catch (Exception)
             {
                 return null;
             }
@@ -18,14 +20,16 @@ namespace Services
 
         public List<Role> GetAll()
         {
-            return GlobalDB.Roles;
+            return JsonService.ReadRoles();
         }
 
         public bool DeleteById(string Id)
         {
             try
             {
-                GlobalDB.Roles = GlobalDB.Roles.FindAll(role => role.Id != Id);
+                var Roles = JsonService.ReadRoles().FindAll(role => role.Id != Id);
+                if (!JsonService.UpdateRoleJson(Roles)) throw new Exception();
+
             }
             catch (Exception)
             {
@@ -37,7 +41,7 @@ namespace Services
 
         public List<string> GetRoles()
         {
-            return (from role in GlobalDB.Roles select role.Id + " " + role.Name.ToUpper()).ToList();
+            return (from role in JsonService.ReadRoles() select role.Id + " " + role.Name.ToUpper()).ToList();
         }
 
         public bool Save(Role role)
@@ -51,27 +55,31 @@ namespace Services
             try
             {
                 role.Id = this.GenerateId();
-                GlobalDB.Roles.Add(role);
-                return true;
+                var Roles = JsonService.ReadRoles();
+                Roles.Add(role);
+                if (!JsonService.UpdateRoleJson(Roles)) throw new Exception();
             }
-            catch (System.Exception)
+            catch (Exception)
             {
                 return false;
             }
+            return true;
         }
 
         public bool Update(Role role)
         {
             try
             {
-                int index = GlobalDB.Roles.FindIndex(r => r.Id == role.Id);
-                GlobalDB.Roles[index] = role;
-                return true;
+                var Roles = JsonService.ReadRoles();
+                int index = Roles.FindIndex(r => r.Id == role.Id);
+                Roles[index] = role;
+                if (!JsonService.UpdateRoleJson(Roles)) throw new Exception();
             }
-            catch (System.Exception)
+            catch (Exception)
             {
                 return false;
             }
+            return true;
         }
 
         public string GenerateId()

@@ -1,3 +1,4 @@
+using Models;
 using Services;
 
 namespace Frontend
@@ -145,24 +146,26 @@ namespace Frontend
 
         public void EditEmployee()
         {
-            this.DisplayEmployees();
-            if (EmployeeService.GetAll().Count > 0)
+            try
             {
-                Console.WriteLine("Enter Employee id");
-                string? id = Console.ReadLine();
-                Employee? employee = EmployeeService.GetById(id ?? "");
-                if (employee != null)
+                this.DisplayEmployees();
+                if (EmployeeService.GetAll().Count > 0)
                 {
+                    Console.WriteLine("Enter your option");
+                    int optionId;
+                    Utility.GetOption(out optionId, EmployeeService.GetAll().Count);
+                    string? id = EmployeeService.GetAll().ElementAt(optionId - 1).Id;
+                    Employee? employee = EmployeeService.GetById(id ?? "");
                     Console.WriteLine(Menus.EditEmployeeMenu);
                     int option;
                     Utility.GetOption(out option, 10);
                     this.UpdateEmployee(option, employee);
                 }
-                else
-                {
-                    Console.WriteLine("Employee not found with given Id");
-                    this.EditEmployee();
-                }
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Employee not found with given Id");
+                this.EditEmployee();
             }
         }
 
@@ -229,17 +232,22 @@ namespace Frontend
 
         public void DisplayOne()
         {
-            try
+            if (EmployeeService.GetAll().Count > 0)
+                try
+                {
+                    Console.WriteLine("Enter Employee Id");
+                    string? id = Console.ReadLine()?.Trim();
+                    Employee? employee = EmployeeService.GetById(id ?? "");
+                    if (employee == null) throw new Exception();
+                    this.DisplayEmployees(new List<Employee> { employee });
+                }
+                catch (System.Exception)
+                {
+                    Console.WriteLine("Employee not found with given Id");
+                }
+            else
             {
-                Console.WriteLine("Enter Employee Id");
-                string? id = Console.ReadLine()?.Trim();
-                Employee? employee = EmployeeService.GetById(id ?? "");
-                if (employee == null) throw new Exception();
-                this.DisplayEmployees(new List<Employee> { employee });
-            }
-            catch (System.Exception)
-            {
-                Console.WriteLine("Employee not found with given Id");
+                ConsoleUtility.PrintNoData();
             }
         }
 
@@ -253,12 +261,14 @@ namespace Frontend
             DisplayEmployees();
             if (EmployeeService.GetAll().Count > 0)
             {
-                Console.WriteLine("Enter id from above");
-                string? id = Console.ReadLine()?.Trim();
-                Employee? employee = EmployeeService.GetById(id ?? "");
+                Console.WriteLine("Enter your option");
+                int option;
+                Utility.GetOption(out option, EmployeeService.GetAll().Count);
+                string? id = EmployeeService.GetAll().ElementAt(option - 1).Id;
+                Employee employee = EmployeeService.GetById(id);
                 if (employee != null)
                 {
-                    bool status = EmployeeService.DeleteByID(id ?? "");
+                    bool status = EmployeeService.DeleteByID(employee.Id);
                     if (status)
                         Console.WriteLine("Employee deleted successfully");
                     else
@@ -325,11 +335,13 @@ namespace Frontend
                 List<string> roles = RoleService.GetRoles();
                 for (int i = 0; i < roles.Count; i++)
                     Console.WriteLine("{0}.{1}", i + 1, roles.ElementAt(i));
-                Console.WriteLine("Enter id from above");
-                string? id = Console.ReadLine()?.Trim();
-                Role? role = RoleService.GetById(id ?? "");
-                if (role != null)
+                Console.WriteLine("Enter your option above");
+                int optionId;
+                Utility.GetOption(out optionId, roles.Count);
+                try
                 {
+                    string id = roles.ElementAt(optionId - 1).Split(" ")[0];
+                    Role? role = RoleService.GetById(id ?? "");
                     Console.WriteLine(Menus.EditRoleMenu);
                     int option;
                     Utility.GetOption(out option, 5);
@@ -338,9 +350,8 @@ namespace Frontend
                         Console.WriteLine("Updated Successfully");
                     else
                         Console.WriteLine("Please try again!");
-
                 }
-                else
+                catch (System.Exception)
                 {
                     Console.WriteLine("Role not found with given id");
                     this.EditRole();
@@ -393,8 +404,10 @@ namespace Frontend
                 List<string> roles = RoleService.GetRoles();
                 for (int i = 0; i < roles.Count; i++)
                     Console.WriteLine("{0}.{1}", i + 1, roles.ElementAt(i));
-                Console.WriteLine("Enter id from above");
-                string? id = Console.ReadLine()?.Trim();
+                Console.WriteLine("Enter your option");
+                int option;
+                Utility.GetOption(out option, RoleService.GetAll().Count);
+                string? id = RoleService.GetAll().ElementAt(option - 1).Id;
                 Role? role = RoleService.GetById(id ?? "");
                 if (role != null)
                 {
@@ -418,9 +431,9 @@ namespace Frontend
             }
         }
 
-        public List<string> GetAssignedEmployees(string Id)
+        public List<Employee> GetAssignedEmployees(string Id)
         {
-            return (from employee in EmployeeService.GetAll() where employee.JobTitle == Id select employee.Id).ToList();
+            return (from employee in EmployeeService.GetAll() where employee.JobTitle == Id select employee).ToList();
         }
         public void ViewRoles()
         {
@@ -439,7 +452,7 @@ namespace Frontend
                 Console.WriteLine("==============================================================================================================================================================");
                 ConsoleUtility.PrintRoleHeader();
                 ConsoleUtility.PrintRoleRow(role);
-                this.DisplayEmployees(EmployeeService.GetAssignedEmployees(this.GetAssignedEmployees(role.Id)));
+                this.DisplayEmployees(this.GetAssignedEmployees(role.Id));
             }
         }
     }
