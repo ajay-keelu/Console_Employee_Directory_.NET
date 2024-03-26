@@ -148,9 +148,9 @@ namespace Frontend
         {
             try
             {
-                this.DisplayEmployees();
                 if (EmployeeService.GetAll().Count > 0)
                 {
+                    ConsoleUtility.ShowEmployees(EmployeeService.GetAll());
                     Console.WriteLine("Enter your option");
                     int optionId;
                     Utility.GetOption(out optionId, EmployeeService.GetAll().Count);
@@ -160,6 +160,10 @@ namespace Frontend
                     int option;
                     Utility.GetOption(out option, 10);
                     this.UpdateEmployee(option, employee);
+                }
+                else
+                {
+                    this.DisplayEmployees();
                 }
             }
             catch (Exception)
@@ -233,10 +237,14 @@ namespace Frontend
         public void DisplayOne()
         {
             if (EmployeeService.GetAll().Count > 0)
+            {
                 try
                 {
-                    Console.WriteLine("Enter Employee Id");
-                    string? id = Console.ReadLine()?.Trim();
+                    this.ConsoleUtility.ShowEmployees(EmployeeService.GetAll());
+                    Console.WriteLine("Enter your option");
+                    int option;
+                    Utility.GetOption(out option, EmployeeService.GetAll().Count);
+                    string id = EmployeeService.GetAll().ElementAt(option - 1).Id;
                     Employee? employee = EmployeeService.GetById(id ?? "");
                     if (employee == null) throw new Exception();
                     this.DisplayEmployees(new List<Employee> { employee });
@@ -245,6 +253,7 @@ namespace Frontend
                 {
                     Console.WriteLine("Employee not found with given Id");
                 }
+            }
             else
             {
                 ConsoleUtility.PrintNoData();
@@ -258,9 +267,10 @@ namespace Frontend
 
         public void DeleteEmployee()
         {
-            DisplayEmployees();
+
             if (EmployeeService.GetAll().Count > 0)
             {
+                ConsoleUtility.ShowEmployees(EmployeeService.GetAll());
                 Console.WriteLine("Enter your option");
                 int option;
                 Utility.GetOption(out option, EmployeeService.GetAll().Count);
@@ -278,6 +288,10 @@ namespace Frontend
                 {
                     Console.WriteLine("Employee not found");
                 }
+            }
+            else
+            {
+                this.DisplayEmployees();
             }
         }
 

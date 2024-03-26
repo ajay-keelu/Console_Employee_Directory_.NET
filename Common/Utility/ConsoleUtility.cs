@@ -1,5 +1,4 @@
 using Models;
-using Services;
 
 namespace Frontend
 {
@@ -22,6 +21,15 @@ namespace Frontend
             Console.WriteLine("+------------------+------------------------------+------------------------------+------------------------------+");
             Console.WriteLine("|Role ID           |Role Name                     |Department                    |Location                      |");
             Console.WriteLine("+------------------+------------------------------+------------------------------+------------------------------+");
+        }
+
+        public void ShowEmployees(List<Employee> Employees)
+        {
+            int i = 1;
+            foreach (var employee in Employees)
+            {
+                Console.WriteLine("{0}.{1}", i++, employee.Name);
+            }
         }
 
         public void PrintTableHead()
