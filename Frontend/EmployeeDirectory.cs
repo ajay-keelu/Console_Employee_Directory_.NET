@@ -6,10 +6,16 @@ namespace Frontend
 
     public class EmployeeDirectory
     {
-        EmployeeService EmployeeService = new EmployeeService();
 
-        RoleService RoleService = new RoleService();
+        RoleService RoleService;
 
+        EmployeeService EmployeeService;
+
+        public EmployeeDirectory()
+        {
+            RoleService = new RoleService(new JsonService());
+            EmployeeService = new EmployeeService(new JsonService());
+        }
         public void Initialize()
         {
             Console.WriteLine(Menus.ManagementMenu);
@@ -451,7 +457,7 @@ namespace Frontend
 
                 if (role != null)
                 {
-                    if (EmployeeService.GetAssignedEmployees(role.Id).Count > 0)
+                    if (EmployeeService.GetAssignedEmployee(role.Id).Count > 0)
                     {
                         Console.WriteLine("{0} role contains employees. Please assign employees to another role and then try to delete the role.", role.Name);
                     }
@@ -488,7 +494,7 @@ namespace Frontend
             {
                 ConsoleUtility.PrintRoleHeader();
                 ConsoleUtility.PrintRoleRow(role);
-                this.DisplayEmployees(EmployeeService.GetAssignedEmployees(role.Id));
+                this.DisplayEmployees(EmployeeService.GetAssignedEmployee(role.Id));
                 Console.WriteLine("===========================================================================================================================================================================");
             }
         }

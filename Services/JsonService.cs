@@ -5,22 +5,22 @@ namespace Services
 {
     public class JsonService
     {
-        public readonly string Storage = @"Database/Storage.json";
+        public readonly string db = @"Database/db.json";
 
-        public List<Employee> ReadEmployees()
+        public List<Employee> GetEmployees()
         {
 
-            return JsonSerializer.Deserialize<JsonData>(File.ReadAllText(Storage))?.Employees!;
+            return JsonSerializer.Deserialize<JsonData>(File.ReadAllText(db))?.Employees!;
         }
 
         public bool UpdateEmployeeJson(List<Employee> Employees)
         {
             try
             {
-                JsonData JsonData = JsonSerializer.Deserialize<JsonData>(File.ReadAllText(Storage))!;
+                JsonData JsonData = JsonSerializer.Deserialize<JsonData>(File.ReadAllText(db))!;
                 JsonData.Employees = Employees;
                 string jsonString = JsonSerializer.Serialize(JsonData);
-                File.WriteAllText(Storage, jsonString);
+                File.WriteAllText(db, jsonString);
                 return true;
             }
             catch (Exception)
@@ -28,19 +28,19 @@ namespace Services
                 return false;
             }
         }
-        public List<Role> ReadRoles()
+        public List<Role> GetRoles()
         {
-            return JsonSerializer.Deserialize<JsonData>(File.ReadAllText(Storage))?.Roles;
+            return JsonSerializer.Deserialize<JsonData>(File.ReadAllText(db))?.Roles;
         }
 
         public bool UpdateRoleJson(List<Role> Roles)
         {
             try
             {
-                JsonData JsonData = JsonSerializer.Deserialize<JsonData>(File.ReadAllText(Storage))!;
+                JsonData JsonData = JsonSerializer.Deserialize<JsonData>(File.ReadAllText(db))!;
                 JsonData.Roles = Roles;
                 string jsonString = JsonSerializer.Serialize(JsonData);
-                File.WriteAllText(Storage, jsonString);
+                File.WriteAllText(db, jsonString);
                 return true;
             }
             catch (Exception)

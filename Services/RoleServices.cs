@@ -4,8 +4,11 @@ namespace Services
 {
     public class RoleService
     {
-        public JsonService JsonService = new JsonService();
-
+        public JsonService JsonService;
+        public RoleService(JsonService JsonService)
+        {
+            this.JsonService = JsonService;
+        }
         public Role? GetById(string id)
         {
             try
@@ -25,7 +28,7 @@ namespace Services
 
         public List<Role> GetAll()
         {
-            return (from role in JsonService.ReadRoles() where role.IsActive select role).ToList();
+            return (from role in JsonService.GetRoles() where role.IsActive select role).ToList();
         }
 
         public bool DeleteById(string Id)
@@ -67,7 +70,7 @@ namespace Services
             try
             {
                 role.Id = this.GenerateId();
-                var Roles = JsonService.ReadRoles();
+                var Roles = JsonService.GetRoles();
                 Roles.Add(role);
                 if (!JsonService.UpdateRoleJson(Roles)) throw new Exception();
             }
@@ -82,7 +85,7 @@ namespace Services
         {
             try
             {
-                var Roles = JsonService.ReadRoles();
+                var Roles = JsonService.GetRoles();
                 int index = Roles.FindIndex(r => r.Id == role.Id);
                 Roles[index] = role;
                 if (!JsonService.UpdateRoleJson(Roles)) throw new Exception();

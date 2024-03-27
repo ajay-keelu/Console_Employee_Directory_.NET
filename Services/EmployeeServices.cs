@@ -4,12 +4,17 @@ namespace Services
 {
     public class EmployeeService
     {
-        public JsonService JsonService = new JsonService();
+        private JsonService JsonService;
+
+        public EmployeeService(JsonService JsonService)
+        {
+            this.JsonService = JsonService;
+        }
         public Employee GetById(string id)
         {
             try
             {
-                return (from emp in JsonService.ReadEmployees() where emp.Id == id && emp.IsActive select emp).Single();
+                return (from emp in this.GetAll() where emp.Id == id select emp).Single();
             }
             catch (Exception)
             {
@@ -17,14 +22,14 @@ namespace Services
             }
         }
 
-        public List<Employee> GetAssignedEmployees(string Id)
+        public List<Employee> GetAssignedEmployee(string Id)
         {
             return (from employee in this.GetAll() where employee.JobTitle == Id select employee).ToList();
         }
 
         public List<Employee> GetAll()
         {
-            return (from employee in JsonService.ReadEmployees() where employee.IsActive select employee).ToList();
+            return (from employee in JsonService.GetEmployees() where employee.IsActive select employee).ToList();
         }
 
         public bool Create(Employee employee)
