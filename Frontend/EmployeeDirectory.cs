@@ -137,9 +137,9 @@ namespace Frontend
                 };
 
                 if (EmployeeService.Save(employee))
-                    Console.WriteLine("Employee Created Successfully. \n");
+                    Console.WriteLine("Employee created successfully. \n");
                 else
-                    Console.WriteLine("Error in Creation of employee.");
+                    Console.WriteLine("Error in creation of employee.");
             }
             else
             {
@@ -228,7 +228,7 @@ namespace Frontend
             }
 
             EmployeeService.Update(employee);
-            Console.WriteLine("\nUpdated Successfully.");
+            Console.WriteLine("\nUpdated successfully.");
             this.EmployeeInitalize();
         }
 
@@ -383,7 +383,7 @@ namespace Frontend
                     Utility.GetOption(out option, 5);
 
                     if (this.UpdateRole(option, role))
-                        Console.WriteLine("Updated Successfully.");
+                        Console.WriteLine("Updated successfully.");
                     else
                         Console.WriteLine("Please try again!.");
                 }
@@ -472,7 +472,8 @@ namespace Frontend
 
         public void ViewRoles()
         {
-            if (RoleService.GetAll().Count == 0)
+            var roles = RoleService.GetAll();
+            if (roles.Count == 0)
             {
                 ConsoleUtility.PrintNoData();
             }
@@ -481,13 +482,14 @@ namespace Frontend
                 Console.WriteLine("+----------------------+");
                 Console.WriteLine("|       Roles          |");
                 Console.WriteLine("+----------------------+");
+                Console.WriteLine("===========================================================================================================================================================================");
             }
-            foreach (Role role in RoleService.GetAll())
+            foreach (Role role in roles)
             {
-                Console.WriteLine("==============================================================================================================================================================");
                 ConsoleUtility.PrintRoleHeader();
                 ConsoleUtility.PrintRoleRow(role);
                 this.DisplayEmployees(EmployeeService.GetAssignedEmployees(role.Id));
+                Console.WriteLine("===========================================================================================================================================================================");
             }
         }
     }
