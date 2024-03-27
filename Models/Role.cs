@@ -18,10 +18,7 @@ namespace Models
 
         public Role()
         {
-            this.Location = string.Empty;
-            this.AssignedEmployees = new List<string>();
-            this.Department = string.Empty;
-            this.Description = string.Empty;
+            AssignedEmployees = new List<string>();
             this.IsActive = true;
         }
     }

@@ -1,1 +1,45 @@
-{ "Employees": [], "Roles": [] }
+{
+  "Employees": [
+    {
+      "Id": "TZ2024327153614",
+      "Name": "Ajay K",
+      "Location": "hyd",
+      "DateOfBirth": "0001-01-01T00:00:00",
+      "Email": "aja@aja.aja",
+      "MobileNumber": "",
+      "JobTitle": "TZ202432714545",
+      "Department": "Pe",
+      "Manager": "",
+      "Project": "",
+      "Status": 1,
+      "JoiningDate": "2020-01-19T00:00:00",
+      "IsActive": true
+    },
+    {
+      "Id": "TZ2024327154639",
+      "Name": "Satwik B",
+      "Location": "hyd",
+      "DateOfBirth": "0001-01-01T00:00:00",
+      "Email": "sat@sat.sat",
+      "MobileNumber": "",
+      "JobTitle": "TZ202432714545",
+      "Department": "PE",
+      "Manager": "",
+      "Project": "",
+      "Status": 1,
+      "JoiningDate": "2024-02-02T00:00:00",
+      "IsActive": false
+    }
+  ],
+  "Roles": [
+    {
+      "Name": "Frontend",
+      "Id": "TZ202432714545",
+      "Department": "PE",
+      "Description": "PE desc",
+      "Location": "Hyd",
+      "AssignedEmployees": [],
+      "IsActive": true
+    }
+  ]
+}

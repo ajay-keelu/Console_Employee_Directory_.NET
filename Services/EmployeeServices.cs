@@ -9,7 +9,7 @@ namespace Services
         {
             try
             {
-                return (from emp in JsonService.ReadEmployees() where emp.Id == id select emp).Single();
+                return (from emp in JsonService.ReadEmployees() where emp.Id == id && emp.IsActive select emp).Single();
             }
             catch (Exception)
             {
@@ -17,9 +17,14 @@ namespace Services
             }
         }
 
+        public List<Employee> GetAssignedEmployees(string Id)
+        {
+            return (from employee in this.GetAll() where employee.JobTitle == Id select employee).ToList();
+        }
+
         public List<Employee> GetAll()
         {
-            return JsonService.ReadEmployees();
+            return (from employee in JsonService.ReadEmployees() where employee.IsActive select employee).ToList();
         }
 
         public bool Create(Employee employee)
@@ -27,9 +32,12 @@ namespace Services
             try
             {
                 employee.Id = this.GenerateId();
-                var Employees = JsonService.ReadEmployees();
+
+                var Employees = this.GetAll();
                 Employees.Add(employee);
-                if (!JsonService.UpdateEmployeeJson(Employees)) throw new Exception();
+
+                if (!JsonService.UpdateEmployeeJson(Employees))
+                    throw new Exception();
 
                 return true;
             }
@@ -43,14 +51,16 @@ namespace Services
         {
             try
             {
-                var Employees = JsonService.ReadEmployees();
+                var Employees = this.GetAll();
                 int index = Employees.FindIndex(emp => emp.Id == employee.Id);
                 Employees[index] = employee;
-                if (!JsonService.UpdateEmployeeJson(Employees)) throw new Exception();
+
+                if (!JsonService.UpdateEmployeeJson(Employees))
+                    throw new Exception();
 
                 return true;
             }
-            catch (System.Exception)
+            catch (Exception)
             {
                 return false;
             }
@@ -61,9 +71,18 @@ namespace Services
             try
             {
                 Employee employee = this.GetById(Id);
-                var Employees = JsonService.ReadEmployees();
-                Employees = (from emp in JsonService.ReadEmployees() where emp.Id != Id select emp).ToList();
-                if (!JsonService.UpdateEmployeeJson(Employees)) throw new Exception();
+                if (employee == null)
+                    throw new Exception();
+                var Employees = new List<Employee>();
+                foreach (Employee emp in this.GetAll())
+                {
+                    if (emp.Id == Id) emp.IsActive = false;
+
+                    Employees.Add(emp);
+                }
+
+                if (!JsonService.UpdateEmployeeJson(Employees))
+                    throw new Exception();
                 return true;
             }
             catch (Exception)

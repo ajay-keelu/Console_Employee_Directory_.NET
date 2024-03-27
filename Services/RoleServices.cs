@@ -10,7 +10,7 @@ namespace Services
         {
             try
             {
-                return (from role in JsonService.ReadRoles() where role.Id == id select role).Single();
+                return (from role in this.GetAll() where role.Id == id select role).Single();
             }
             catch (Exception)
             {
@@ -18,16 +18,28 @@ namespace Services
             }
         }
 
+        public bool AreRolesExist()
+        {
+            return this.GetAll().Any();
+        }
+
         public List<Role> GetAll()
         {
-            return JsonService.ReadRoles();
+            return (from role in JsonService.ReadRoles() where role.IsActive select role).ToList();
         }
 
         public bool DeleteById(string Id)
         {
             try
             {
-                var Roles = JsonService.ReadRoles().FindAll(role => role.Id != Id);
+                var Roles = new List<Role>();
+                foreach (Role role in this.GetAll())
+                {
+                    if (role.Id == Id)
+                        role.IsActive = false;
+
+                    Roles.Add(role);
+                }
                 if (!JsonService.UpdateRoleJson(Roles)) throw new Exception();
 
             }
@@ -39,9 +51,9 @@ namespace Services
             return true;
         }
 
-        public List<string> GetRoles()
+        public List<string> GetRoleName()
         {
-            return (from role in JsonService.ReadRoles() select role.Id + " " + role.Name.ToUpper()).ToList();
+            return (from role in this.GetAll() select role.Id + " " + role.Name.ToUpper()).ToList();
         }
 
         public bool Save(Role role)

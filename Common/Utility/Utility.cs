@@ -1,11 +1,10 @@
-using System.Globalization;
 using System.Text.RegularExpressions;
 
 namespace Frontend
 {
     public class Utility
     {
-        public void GetOption(out int option, int options)
+        public static void GetOption(out int option, int options)
         {
             try
             {
@@ -14,85 +13,96 @@ namespace Frontend
             }
             catch (System.Exception)
             {
-                Console.WriteLine("\nEnter options from above :)");
-                this.GetOption(out option, options);
+                Console.WriteLine("\nEnter options from above ");
+                GetOption(out option, options);
             }
         }
 
-        public bool IsValidProperty(string s, string pattern)
+        public static bool IsValidProperty(string s, string pattern)
         {
             return Regex.IsMatch(s, pattern);
         }
 
-        public string GetInputString(string propertyName, bool isRequired, string? pattern)
+        public static string GetInputString(string propertyName, bool isRequired, string? pattern)
         {
-            string? s;
+            string? input;
             try
             {
                 Console.WriteLine("Enter {0}{1}", propertyName, isRequired ? "*" : "");
-                s = Console.ReadLine()?.Trim();
-                if (isRequired && string.IsNullOrEmpty(s)) throw new Exception();
-                if (pattern != null && !IsValidProperty(s ??= "", pattern)) throw new Exception();
+                input = Console.ReadLine()?.Trim();
 
-                return s;
+                if (isRequired && string.IsNullOrEmpty(input))
+                    throw new Exception();
+
+                if (pattern != null && !IsValidProperty(input ??= "", pattern))
+                    throw new Exception();
             }
-            catch (System.Exception)
+            catch (Exception)
             {
-                Console.WriteLine("Please enter {0} correctly ... ", propertyName);
-                return this.GetInputString(propertyName, isRequired, pattern);
+                Console.WriteLine("Please enter valid {0}  ... ", propertyName);
+                input = GetInputString(propertyName, isRequired, pattern);
             }
+            return input;
         }
 
-        public DateTime GetInputDate(string propertyName, bool isRequired)
+        public static DateTime GetInputDate(string propertyName, bool isRequired)
         {
             string? date;
             try
             {
                 Console.WriteLine("Enter {0}{1}", propertyName, isRequired ? "*" : "");
                 date = Console.ReadLine()?.Trim();
-                if (!string.IsNullOrEmpty(date) && !this.IsValidProperty(date, RegularExpression.DatePattern)) throw new Exception();
 
-                if (isRequired && !this.IsValidProperty(date ??= "", RegularExpression.DatePattern)) throw new Exception();
+                if (!string.IsNullOrEmpty(date) && !IsValidProperty(date, RegularExpression.DatePattern))
+                    throw new Exception();
+
+                if (isRequired && !IsValidProperty(date ??= "", RegularExpression.DatePattern))
+                    throw new Exception();
+
                 return DateTime.Parse(date is null or "" ? DateTime.MinValue.ToString("dd/MM/yyyy") : date);
             }
-            catch (System.Exception)
+            catch (Exception)
             {
-                Console.WriteLine("Please enter {0} correctly ... ", propertyName);
-                return this.GetInputDate(propertyName, isRequired);
+                Console.WriteLine("Please enter valid {0}  ... ", propertyName);
+                return GetInputDate(propertyName, isRequired);
             }
         }
 
-        public string GetInputEmail()
+        public static string GetInputEmail()
         {
             string? email;
             try
             {
                 Console.WriteLine("Enter email*");
                 email = Console.ReadLine()?.Trim();
-                if (!this.IsValidProperty(email ??= "", RegularExpression.EmailPattern)) throw new Exception();
-                return email;
+
+                if (!IsValidProperty(email ??= "", RegularExpression.EmailPattern)) 
+                throw new Exception();
             }
-            catch (System.Exception)
+            catch (Exception)
             {
-                Console.WriteLine("Please enter email correctly ... ");
-                return this.GetInputEmail();
+                Console.WriteLine("Please enter valid email  ... ");
+                email = GetInputEmail();
             }
+            return email;
         }
 
-        public string GetMobileNumber()
+        public static string GetMobileNumber()
         {
+            string? mobile;
             try
             {
                 Console.WriteLine("Enter mobile number ");
-                string? mobile = Console.ReadLine()?.Trim();
-                if (!string.IsNullOrEmpty(mobile ??= "") && !this.IsValidProperty(mobile, RegularExpression.MobilePattern)) throw new Exception();
-                return mobile;
+                mobile = Console.ReadLine()?.Trim();
+                if (!string.IsNullOrEmpty(mobile ??= "") && !IsValidProperty(mobile, RegularExpression.MobilePattern)) 
+                throw new Exception();
             }
-            catch (System.Exception)
+            catch (Exception)
             {
-                Console.WriteLine("Enter mobile number correctly");
-                return this.GetMobileNumber();
+                Console.WriteLine("Please enter valid mobile number ");
+                mobile = GetMobileNumber();
             }
+            return mobile;
         }
 
     }
